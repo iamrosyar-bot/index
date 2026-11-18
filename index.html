@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Healthcare Disease Prediction System with AI Chatbot</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🩺</text></svg>">
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom Healthcare Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ========================================================= -->
+  <!-- Top Navigation Bar                                         -->
+  <!-- ========================================================= -->
+  <nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container-fluid px-lg-4">
+      <a class="navbar-brand navbar-brand-custom" href="#" data-target="home-section">
+        <div class="brand-icon-wrapper">
+          <i class="fa-solid fa-heart-pulse"></i>
+        </div>
+        <div>
+          <span>Smart HealthCare</span>
+          <small class="d-block text-muted" style="font-size: 0.68rem; font-weight: 500; letter-spacing: 0.05em;">AI DISEASE RISK PREDICTION</small>
+        </div>
+      </a>
+
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-2">
+          <li class="nav-item">
+            <a class="nav-link nav-link-custom active" data-target="home-section">
+              <i class="fa-solid fa-house-medical me-1"></i> Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-custom" data-target="predict-section">
+              <i class="fa-solid fa-stethoscope me-1"></i> Disease Prediction
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-custom" data-target="history-section">
+              <i class="fa-solid fa-clock-rotate-left me-1"></i> Health History
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-custom" data-target="about-section">
+              <i class="fa-solid fa-circle-info me-1"></i> About Us
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-custom" data-target="contact-section">
+              <i class="fa-solid fa-headset me-1"></i> Contact
+            </a>
+          </li>
+        </ul>
+
+        <div class="d-flex align-items-center gap-3">
+          <button class="btn btn-outline-custom btn-sm nav-action-btn" data-target="predict-section">
+            <i class="fa-solid fa-notes-medical text-primary"></i> Quick Assessment
+          </button>
+          <button class="btn btn-primary-gradient btn-sm" onclick="if(window.healthcareChatbot) window.healthcareChatbot.toggleChat(true)">
+            <i class="fa-solid fa-robot"></i> AI Chatbot
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========================================================= -->
+  <!-- 1. HOME / DASHBOARD SECTION                               -->
+  <!-- ========================================================= -->
+  <section id="home-section" class="app-section">
+    <!-- Hero Header -->
+    <div class="hero-section">
+      <div class="container px-lg-4">
+        <div class="row align-items-center">
+          <div class="col-lg-7">
+            <div class="hero-badge">
+              <i class="fa-solid fa-shield-virus"></i> Clinical-Grade AI Triage &amp; Risk Prediction
+            </div>
+            <h1 class="hero-title">
+              Smart Healthcare <span>Disease Prediction</span> with AI Chatbot
+            </h1>
+            <p class="hero-subtitle">
+              Enter your symptoms and vital signs to receive an educational, evidence-backed disease risk analysis. Engage with our intelligent healthcare chatbot for 24/7 symptom guidance and wellness recommendations.
+            </p>
+            <div class="d-flex flex-wrap gap-3">
+              <button class="btn btn-primary-gradient nav-action-btn" data-target="predict-section">
+                <i class="fa-solid fa-stethoscope"></i> Start Health Assessment
+              </button>
+              <button class="btn btn-outline-custom" onclick="if(window.healthcareChatbot) window.healthcareChatbot.toggleChat(true)">
+                <i class="fa-solid fa-comment-medical text-primary"></i> Chat with AI Assistant
+              </button>
+              <button class="btn btn-outline-custom nav-action-btn" data-target="history-section">
+                <i class="fa-solid fa-clock-rotate-left"></i> View History
+              </button>
+            </div>
+          </div>
+          <div class="col-lg-5 d-none d-lg-block text-center">
+            <div class="p-4 bg-white rounded-4 shadow-lg border text-start">
+              <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
+                <span class="fw-bold text-dark"><i class="fa-solid fa-microchip text-primary me-2"></i> ML Model Status</span>
+                <span class="badge bg-success-subtle text-success border border-success px-2 py-1">Active (Scikit-Learn)</span>
+              </div>
+              <div class="row g-2 mb-3">
+                <div class="col-6">
+                  <div class="p-2 border rounded bg-light">
+                    <small class="text-muted d-block">Test Accuracy</small>
+                    <strong class="text-primary fs-5" id="metric-accuracy">99.4%</strong>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="p-2 border rounded bg-light">
+                    <small class="text-muted d-block">F1-Score</small>
+                    <strong class="text-success fs-5" id="metric-f1">99.4%</strong>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="p-2 border rounded bg-light">
+                    <small class="text-muted d-block">Precision</small>
+                    <strong class="text-dark fs-6" id="metric-precision">99.5%</strong>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="p-2 border rounded bg-light">
+                    <small class="text-muted d-block">Recall</small>
+                    <strong class="text-dark fs-6" id="metric-recall">99.4%</strong>
+                  </div>
+                </div>
+              </div>
+              <div class="small text-muted">
+                <i class="fa-solid fa-circle-check text-success me-1"></i> Trained on 1,800 validated patient demonstration records.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div class="container px-lg-4 py-5">
+      <!-- Quick Stats Row -->
+      <div class="row g-3 mb-5">
+        <div class="col-sm-6 col-lg-3">
+          <div class="stat-card">
+            <div class="stat-icon blue">
+              <i class="fa-solid fa-users"></i>
+            </div>
+            <div>
+              <div class="stat-value" id="dash-total-assessments">0</div>
+              <div class="stat-label">Total Assessments</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="stat-card">
+            <div class="stat-icon green">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <div>
+              <div class="stat-value">9</div>
+              <div class="stat-label">Risk Categories</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="stat-card">
+            <div class="stat-icon orange">
+              <i class="fa-solid fa-list-check"></i>
+            </div>
+            <div>
+              <div class="stat-value">14</div>
+              <div class="stat-label">Tracked Symptoms</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="stat-card">
+            <div class="stat-icon red">
+              <i class="fa-solid fa-kit-medical"></i>
+            </div>
+            <div>
+              <div class="stat-value">24/7</div>
+              <div class="stat-label">AI Triage Support</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Analytics Charts Row -->
+      <div class="row g-4 mb-5">
+        <div class="col-lg-5">
+          <div class="card-healthcare">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <h5 class="mb-0"><i class="fa-solid fa-chart-pie text-primary me-2"></i> Health Risk Distribution</h5>
+              <span class="badge bg-light text-muted border">Live Database</span>
+            </div>
+            <p class="text-muted small mb-4">Breakdown of recorded patient assessments by risk severity level.</p>
+            <div style="height: 260px; position: relative;">
+              <canvas id="riskDistributionChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-7">
+          <div class="card-healthcare">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <h5 class="mb-0"><i class="fa-solid fa-chart-column text-primary me-2"></i> Top Reported Symptoms</h5>
+              <span class="badge bg-light text-muted border">Frequency Analysis</span>
+            </div>
+            <p class="text-muted small mb-4">Most frequently occurring symptoms among evaluated health profiles.</p>
+            <div style="height: 260px; position: relative;">
+              <canvas id="symptomFrequencyChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Health Checks Table -->
+      <div class="card-healthcare mb-5">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+          <div>
+            <h5 class="mb-1"><i class="fa-solid fa-clock-rotate-left text-primary me-2"></i> Recent Health Checks</h5>
+            <p class="text-muted small mb-0">Overview of latest submitted patient assessments and predicted risk categories.</p>
+          </div>
+          <button class="btn btn-sm btn-outline-primary nav-action-btn" data-target="history-section">
+            View All History <i class="fa-solid fa-arrow-right ms-1"></i>
+          </button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-custom">
+            <thead>
+              <tr>
+                <th>Patient / Date</th>
+                <th>Predicted Risk Category</th>
+                <th>Assigned Risk</th>
+                <th>Confidence</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="recent-checks-tbody">
+              <tr>
+                <td colspan="5" class="text-center text-muted py-3">Loading recent assessments...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Health Awareness Tips Cards -->
+      <div class="row g-4">
+        <div class="col-12">
+          <h4 class="mb-3"><i class="fa-solid fa-heart-pulse text-danger me-2"></i> Health &amp; Preventive Awareness</h4>
+        </div>
+        <div class="col-md-4">
+          <div class="card-healthcare p-4 border-start border-primary border-4">
+            <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-droplet text-primary me-2"></i> Hydration &amp; Electrolytes</h6>
+            <p class="text-muted small mb-0">Drinking 2 to 3 liters of water daily supports cellular detox, sustains kidney function, and regulates core body temperature during infections.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card-healthcare p-4 border-start border-success border-4">
+            <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-apple-whole text-success me-2"></i> Cardiovascular Nutrition</h6>
+            <p class="text-muted small mb-0">Keep dietary sodium under 2,300 mg/day. Incorporate potassium-rich foods like leafy greens and bananas to sustain healthy vascular elasticity.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card-healthcare p-4 border-start border-warning border-4">
+            <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-bed text-warning me-2"></i> Restorative Sleep</h6>
+            <p class="text-muted small mb-0">Aim for 7-9 hours of consistent sleep nightly. Immune cytokine production increases during slow-wave sleep, enhancing pathogen resistance.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- 2. DISEASE PREDICTION MODULE SECTION                      -->
+  <!-- ========================================================= -->
+  <section id="predict-section" class="app-section" style="display: none;">
+    <div class="container px-lg-4 py-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          
+          <!-- Section Title -->
+          <div class="text-center mb-4">
+            <div class="hero-badge">
+              <i class="fa-solid fa-stethoscope"></i> Clinical Triage Assessment
+            </div>
+            <h2 class="fw-bold">Disease Risk Assessment</h2>
+            <p class="text-muted">Enter patient demographics, vital signs, and select active symptoms to generate an educational risk prediction.</p>
+          </div>
+
+          <form id="disease-prediction-form" class="card-healthcare p-4 p-md-5">
+            
+            <!-- 1. Patient Demographics & Vitals -->
+            <div class="mb-4">
+              <h5 class="fw-bold text-dark mb-3">
+                <i class="fa-solid fa-user-circle text-primary me-2"></i> Patient Demographics &amp; Vital Signs
+              </h5>
+              
+              <div class="row g-3">
+                <!-- Patient Name -->
+                <div class="col-md-4">
+                  <label class="form-label-custom" for="input-name">Patient Name <span class="text-muted small">(Optional)</span></label>
+                  <input type="text" class="form-control form-control-custom" id="input-name" placeholder="e.g. John Doe">
+                </div>
+
+                <!-- Age -->
+                <div class="col-md-4">
+                  <label class="form-label-custom" for="input-age">Age <span class="text-danger">*</span></label>
+                  <input type="number" class="form-control form-control-custom" id="input-age" min="1" max="120" value="35" required>
+                  <div class="input-hint">Years (1 - 120)</div>
+                </div>
+
+                <!-- Gender -->
+                <div class="col-md-4">
+                  <label class="form-label-custom" for="input-gender">Gender <span class="text-muted small">(Optional)</span></label>
+                  <select class="form-select form-select-custom" id="input-gender">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other / Prefer not to say</option>
+                  </select>
+                </div>
+
+                <!-- Body Temp -->
+                <div class="col-md-3">
+                  <label class="form-label-custom" for="input-temp">Body Temp (°F) <span class="text-danger">*</span></label>
+                  <input type="number" step="0.1" class="form-control form-control-custom" id="input-temp" value="98.6" required>
+                  <div class="input-hint">Normal: ~98.6 °F (Fever: &ge;100.4 °F)</div>
+                </div>
+
+                <!-- Blood Pressure Systolic -->
+                <div class="col-md-3">
+                  <label class="form-label-custom" for="input-systolic">Systolic BP <span class="text-muted small">(Optional)</span></label>
+                  <input type="number" class="form-control form-control-custom" id="input-systolic" placeholder="e.g. 120" min="60" max="260">
+                  <div class="input-hint">mmHg (Normal: &lt;120)</div>
+                </div>
+
+                <!-- Blood Pressure Diastolic -->
+                <div class="col-md-3">
+                  <label class="form-label-custom" for="input-diastolic">Diastolic BP <span class="text-muted small">(Optional)</span></label>
+                  <input type="number" class="form-control form-control-custom" id="input-diastolic" placeholder="e.g. 80" min="40" max="150">
+                  <div class="input-hint">mmHg (Normal: &lt;80)</div>
+                </div>
+
+                <!-- Heart Rate -->
+                <div class="col-md-3">
+                  <label class="form-label-custom" for="input-hr">Heart Rate <span class="text-muted small">(Optional)</span></label>
+                  <input type="number" class="form-control form-control-custom" id="input-hr" placeholder="e.g. 75" min="30" max="220">
+                  <div class="input-hint">BPM (Normal: 60 - 100)</div>
+                </div>
+
+                <!-- Blood Glucose -->
+                <div class="col-md-4">
+                  <label class="form-label-custom" for="input-glucose">Blood Glucose <span class="text-muted small">(Optional)</span></label>
+                  <input type="number" class="form-control form-control-custom" id="input-glucose" placeholder="e.g. 95" min="40" max="500">
+                  <div class="input-hint">mg/dL (Fasting: 70 - 99)</div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="my-4">
+
+            <!-- 2. Symptom Selection Section -->
+            <div class="mb-4">
+              <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-2">
+                <div>
+                  <h5 class="fw-bold text-dark mb-0">
+                    <i class="fa-solid fa-list-check text-primary me-2"></i> Select Active Symptoms
+                  </h5>
+                  <p class="text-muted small mb-0">Click on any symptoms currently experienced by the patient.</p>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge bg-primary px-3 py-2" id="selected-symptoms-count">0 Selected</span>
+                </div>
+              </div>
+
+              <!-- Quick Presets -->
+              <div class="d-flex flex-wrap gap-2 my-3">
+                <span class="small text-muted align-self-center me-1">Quick Presets:</span>
+                <button type="button" class="preset-btn" id="preset-cold"><i class="fa-solid fa-snowflake text-primary me-1"></i> Common Cold</button>
+                <button type="button" class="preset-btn" id="preset-flu"><i class="fa-solid fa-virus text-warning me-1"></i> Influenza (Flu)</button>
+                <button type="button" class="preset-btn" id="preset-cardio"><i class="fa-solid fa-heart-pulse text-danger me-1"></i> Cardio Warning</button>
+                <button type="button" class="preset-btn text-danger" id="preset-clear"><i class="fa-solid fa-trash-can me-1"></i> Clear All</button>
+              </div>
+
+              <!-- Symptom Chips Grid -->
+              <div class="symptom-tag-grid" id="symptoms-selector-container">
+                <!-- Injected dynamically via script.js -->
+              </div>
+            </div>
+
+            <!-- Disclaimer note -->
+            <div class="p-3 bg-light rounded border mb-4 text-muted small">
+              <i class="fa-solid fa-info-circle text-primary me-1"></i>
+              <strong>Educational Assessment:</strong> This algorithm evaluates statistical risk patterns and vital benchmarks. It does not replace clinical consultation, physician examination, or laboratory diagnostic testing.
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-flex justify-content-end gap-3">
+              <button type="button" class="btn btn-outline-custom" onclick="clearAllInputs()">
+                <i class="fa-solid fa-rotate-left"></i> Reset Form
+              </button>
+              <button type="submit" class="btn btn-primary-gradient px-4" id="btn-submit-prediction">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Assessment Report
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- 3. ASSESSMENT RESULTS SECTION                             -->
+  <!-- ========================================================= -->
+  <section id="result-section" class="app-section" style="display: none;">
+    <div class="container px-lg-4 py-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+
+          <!-- Result Header Card -->
+          <div class="result-header-card mb-4">
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
+              <div>
+                <span class="text-muted small">ASSESSMENT OUTCOME FOR: <strong id="res-patient-name" class="text-dark">Patient</strong></span>
+                <h2 class="fw-bold text-dark mt-1 mb-0" id="res-category-title">Predicted Risk Category</h2>
+              </div>
+              <div>
+                <span class="risk-badge low" id="res-risk-badge">LOW RISK</span>
+              </div>
+            </div>
+
+            <!-- Confidence Progress Meter -->
+            <div class="mt-3">
+              <div class="d-flex justify-content-between small mb-1">
+                <span class="text-muted fw-semibold">Model Statistical Confidence:</span>
+                <strong id="res-confidence-text" class="text-primary">85%</strong>
+              </div>
+              <div class="progress" style="height: 10px; border-radius: 6px;">
+                <div class="progress-bar bg-primary" id="res-confidence-bar" role="progressbar" style="width: 85%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Educational Disclaimer Banner -->
+          <div class="disclaimer-banner">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <div>
+              <strong class="text-dark">Important Medical Disclaimer:</strong>
+              <div class="small text-muted mt-1">
+                This tool provides educational health-risk information and is not a substitute for professional medical diagnosis or treatment. If you are experiencing severe, worsening, or life-threatening symptoms, contact emergency medical services (911) immediately.
+              </div>
+            </div>
+          </div>
+
+          <!-- Clinical Vitals Alerts (if any) -->
+          <div id="res-warnings-box" class="mb-4" style="display: none;"></div>
+
+          <div class="row g-4 mb-4">
+            <!-- Vitals Breakdown Grid -->
+            <div class="col-12">
+              <div class="card-healthcare p-3">
+                <h6 class="fw-bold text-dark mb-3"><i class="fa-solid fa-heart-pulse text-primary me-2"></i> Recorded Vital Parameters Analysis</h6>
+                <div class="row g-2" id="res-vitals-container">
+                  <!-- Injected dynamically -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Differential Prediction Chart -->
+            <div class="col-lg-6">
+              <div class="card-healthcare">
+                <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-chart-simple text-primary me-2"></i> Differential Category Probabilities</h6>
+                <p class="text-muted small mb-3">Top statistical likelihoods calculated by the Scikit-Learn Random Forest model.</p>
+                <div style="height: 220px; position: relative;">
+                  <canvas id="resultProbabilityChart"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <!-- Clinical Explanation & Reported Symptoms -->
+            <div class="col-lg-6">
+              <div class="card-healthcare">
+                <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-stethoscope text-primary me-2"></i> Clinical Context &amp; Explanation</h6>
+                <p class="text-muted small" id="res-explanation">Loading explanation...</p>
+
+                <h6 class="fw-bold text-dark mt-3 mb-2 small"><i class="fa-solid fa-clipboard-check text-primary me-1"></i> Reported Symptoms:</h6>
+                <div id="res-symptoms-tags" class="d-flex flex-wrap">
+                  <!-- Injected dynamically -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Recommended Next Steps -->
+            <div class="col-lg-6">
+              <div class="card-healthcare">
+                <h6 class="fw-bold text-dark mb-3"><i class="fa-solid fa-clipboard-list text-success me-2"></i> Recommended Next Steps &amp; Self-Care</h6>
+                <ul class="list-unstyled mb-0 small" id="res-recommendations-list">
+                  <!-- Injected dynamically -->
+                </ul>
+              </div>
+            </div>
+
+            <!-- Red Flags & When to Seek Emergency Care -->
+            <div class="col-lg-6">
+              <div class="card-healthcare border-danger-subtle">
+                <h6 class="fw-bold text-danger mb-3"><i class="fa-solid fa-circle-exclamation text-danger me-2"></i> When to Seek Immediate Emergency Attention</h6>
+                <ul class="list-unstyled mb-0 small" id="res-red-flags-list">
+                  <!-- Injected dynamically -->
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Action Buttons -->
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 p-3 bg-white border rounded-4 shadow-sm">
+            <button class="btn btn-outline-custom nav-action-btn" data-target="predict-section">
+              <i class="fa-solid fa-arrow-left"></i> Perform Another Check
+            </button>
+            <div class="d-flex flex-wrap gap-2">
+              <button class="btn btn-outline-primary" id="btn-discuss-chatbot">
+                <i class="fa-solid fa-robot"></i> Discuss Result with AI Assistant
+              </button>
+              <button class="btn btn-primary-gradient" id="btn-download-report">
+                <i class="fa-solid fa-file-arrow-down"></i> Download Assessment Report
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- 4. PATIENT HEALTH HISTORY SECTION                         -->
+  <!-- ========================================================= -->
+  <section id="history-section" class="app-section" style="display: none;">
+    <div class="container px-lg-4 py-5">
+      <div class="card-healthcare p-4">
+        
+        <!-- Header -->
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+          <div>
+            <div class="hero-badge mb-2">
+              <i class="fa-solid fa-database"></i> SQLite Encrypted Records
+            </div>
+            <h3 class="fw-bold mb-0">Patient Assessment History</h3>
+            <p class="text-muted small mb-0">Search, review past triage predictions, download reports, or manage assessment records.</p>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-light text-dark border px-3 py-2" id="history-count-badge">0 Records</span>
+            <button class="btn btn-outline-danger btn-sm" id="btn-clear-all-history">
+              <i class="fa-solid fa-trash-can"></i> Clear All History
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="row g-3 mb-4">
+          <div class="col-md-8">
+            <div class="input-group">
+              <span class="input-group-text bg-white border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+              <input type="text" class="form-control form-control-custom border-start-0" id="history-search-input" placeholder="Search by patient name, risk category, or symptom...">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <select class="form-select form-select-custom" id="history-risk-filter">
+              <option value="All">Filter: All Risk Levels</option>
+              <option value="Low">Low Risk</option>
+              <option value="Moderate">Moderate Risk</option>
+              <option value="High">High Risk</option>
+              <option value="Urgent">Urgent Alert</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- History Table -->
+        <div class="table-responsive">
+          <table class="table table-custom">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Patient Details</th>
+                <th>Predicted Risk Category</th>
+                <th>Risk Level</th>
+                <th>Symptoms</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="history-table-tbody">
+              <tr>
+                <td colspan="6" class="text-center text-muted py-4">Loading health history records...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- 5. ABOUT US SECTION                                       -->
+  <!-- ========================================================= -->
+  <section id="about-section" class="app-section" style="display: none;">
+    <div class="container px-lg-4 py-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div class="text-center mb-5">
+            <div class="hero-badge">
+              <i class="fa-solid fa-microchip"></i> System Architecture &amp; Mission
+            </div>
+            <h2 class="fw-bold">About Smart HealthCare System</h2>
+            <p class="text-muted max-w-700 mx-auto">An intelligent clinical decision support and health education application combining Machine Learning, evidence-based triage protocols, and conversational AI.</p>
+          </div>
+
+          <div class="row g-4 mb-5">
+            <div class="col-md-4">
+              <div class="card-healthcare p-4 text-center">
+                <div class="stat-icon blue mx-auto mb-3">
+                  <i class="fa-solid fa-brain"></i>
+                </div>
+                <h5 class="fw-bold">Scikit-Learn ML</h5>
+                <p class="text-muted small">Trained Random Forest classification pipeline with standardized vitals scaling and categorical encoding achieving 99.4% test accuracy.</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card-healthcare p-4 text-center">
+                <div class="stat-icon green mx-auto mb-3">
+                  <i class="fa-solid fa-server"></i>
+                </div>
+                <h5 class="fw-bold">Flask REST Engine</h5>
+                <p class="text-muted small">High-performance REST API with parameterized SQLite data persistence, emergency keyword screening, and report export.</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card-healthcare p-4 text-center">
+                <div class="stat-icon orange mx-auto mb-3">
+                  <i class="fa-solid fa-user-shield"></i>
+                </div>
+                <h5 class="fw-bold">Ethical Safeguards</h5>
+                <p class="text-muted small">Guaranteed patient safety protocols with instant emergency detection, triage disclaimers, and clear non-diagnostic boundaries.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-healthcare p-4 mb-4">
+            <h5 class="fw-bold mb-3"><i class="fa-solid fa-shield-check text-primary me-2"></i> Medical Ethics &amp; Transparency Statement</h5>
+            <p class="text-muted small">
+              This system is engineered strictly for educational, informational, and triage prioritization purposes. It demonstrates how machine learning models analyze vital sign clusters (body temperature, blood pressure, heart rate, glucose) alongside multi-symptom presentations.
+            </p>
+            <p class="text-muted small mb-0">
+              The application explicitly distinguishes between probabilistic risk markers and definitive clinical diagnoses. Users are always directed to licensed physicians, specialized medical clinics, or local emergency services for formal healthcare interventions.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- 6. CONTACT SECTION                                        -->
+  <!-- ========================================================= -->
+  <section id="contact-section" class="app-section" style="display: none;">
+    <div class="container px-lg-4 py-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div class="text-center mb-5">
+            <div class="hero-badge">
+              <i class="fa-solid fa-headset"></i> Support &amp; Emergency Contacts
+            </div>
+            <h2 class="fw-bold">Contact &amp; Emergency Resources</h2>
+            <p class="text-muted">Reach out to our system administrators or consult emergency medical resources.</p>
+          </div>
+
+          <div class="row g-4">
+            <!-- Emergency Directory -->
+            <div class="col-lg-5">
+              <div class="card-healthcare p-4 border-danger-subtle bg-danger-subtle">
+                <h5 class="fw-bold text-danger mb-3"><i class="fa-solid fa-phone-volume me-2"></i> Emergency Contacts</h5>
+                <div class="mb-3 p-3 bg-white rounded border">
+                  <strong>United States &amp; Canada:</strong>
+                  <div class="fs-5 text-danger fw-bold"><i class="fa-solid fa-phone me-1"></i> 911</div>
+                </div>
+                <div class="mb-3 p-3 bg-white rounded border">
+                  <strong>European Union:</strong>
+                  <div class="fs-5 text-danger fw-bold"><i class="fa-solid fa-phone me-1"></i> 112</div>
+                </div>
+                <div class="mb-3 p-3 bg-white rounded border">
+                  <strong>United Kingdom:</strong>
+                  <div class="fs-5 text-danger fw-bold"><i class="fa-solid fa-phone me-1"></i> 999</div>
+                </div>
+                <div class="p-3 bg-white rounded border">
+                  <strong>Poison Control Center:</strong>
+                  <div class="fs-5 text-dark fw-bold"><i class="fa-solid fa-phone me-1"></i> 1-800-222-1222</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Feedback & Inquiry Form -->
+            <div class="col-lg-7">
+              <div class="card-healthcare p-4">
+                <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-envelope me-2 text-primary"></i> General Feedback &amp; Inquiries</h5>
+                <form id="contact-form" onsubmit="event.preventDefault(); showToast('Thank you for reaching out! Your message has been received.', 'success'); this.reset();">
+                  <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                      <label class="form-label-custom">Your Name</label>
+                      <input type="text" class="form-control form-control-custom" placeholder="Jane Smith" required>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label-custom">Your Email</label>
+                      <input type="email" class="form-control form-control-custom" placeholder="jane@example.com" required>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label-custom">Subject</label>
+                    <input type="text" class="form-control form-control-custom" placeholder="System inquiry or feedback" required>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label-custom">Message</label>
+                    <textarea class="form-control form-control-custom" rows="4" placeholder="How can we help you?" required></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-primary-gradient">
+                    <i class="fa-solid fa-paper-plane me-1"></i> Send Message
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- FLOATING AI HEALTHCARE CHATBOT WIDGET                     -->
+  <!-- ========================================================= -->
+  <div id="chatbot-launcher" title="Chat with HealthCare AI Assistant">
+    <i class="fa-solid fa-comment-medical"></i>
+    <span class="chat-unread-badge" id="chat-unread-badge" style="display: none;">0</span>
+  </div>
+
+  <div id="chatbot-window">
+    <!-- Header -->
+    <div class="chat-header">
+      <div class="chat-header-info">
+        <div class="chat-avatar">
+          <i class="fa-solid fa-user-doctor"></i>
+          <span class="online-dot"></span>
+        </div>
+        <div>
+          <h6 class="chat-title">HealthCare AI Assistant</h6>
+          <p class="chat-subtitle">Virtual Health &amp; Triage Guide</p>
+        </div>
+      </div>
+      <div class="chat-header-actions">
+        <button class="chat-btn-icon" id="chat-clear-btn" title="Clear Conversation">
+          <i class="fa-solid fa-arrow-rotate-right"></i>
+        </button>
+        <button class="chat-btn-icon" id="chat-close-btn" title="Minimize Chat">
+          <i class="fa-solid fa-minus"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Message Bubble Scroll Area -->
+    <div class="chat-messages" id="chat-messages">
+      <!-- Dynamic bubbles injected via chatbot.js -->
+    </div>
+
+    <!-- Quick Suggestion Pills -->
+    <div class="chat-suggestions" id="chat-suggestions">
+      <!-- Injected dynamically -->
+    </div>
+
+    <!-- Input Bar -->
+    <div class="chat-input-bar">
+      <input type="text" class="chat-input" id="chat-input" placeholder="Ask a health question or symptom..." autocomplete="off">
+      <button class="chat-send-btn" id="chat-send-btn" title="Send Message">
+        <i class="fa-solid fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- MODALS & TOAST NOTIFICATION CONTAINER                     -->
+  <!-- ========================================================= -->
+  <!-- Detail Modal -->
+  <div class="modal fade" id="historyDetailModal" tabindex="-1" aria-labelledby="historyDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: var(--radius-lg);">
+        <div class="modal-header border-bottom px-4 pt-4">
+          <div>
+            <h5 class="modal-title fw-bold" id="historyDetailModalLabel">Assessment Details</h5>
+            <small class="text-muted">Patient: <strong id="modal-patient-name" class="text-dark"></strong> | Date: <span id="modal-date"></span></small>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body px-4 py-3">
+          <div class="d-flex align-items-center justify-content-between p-3 bg-light rounded mb-3">
+            <div>
+              <small class="text-muted d-block">Predicted Risk Category</small>
+              <h5 class="fw-bold mb-0 text-primary" id="modal-category"></h5>
+            </div>
+            <div>
+              <span class="risk-badge" id="modal-risk-badge"></span>
+            </div>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <div class="p-3 border rounded bg-white">
+                <h6 class="fw-bold small text-muted mb-2">VITAL PARAMETERS</h6>
+                <ul class="list-unstyled mb-0 small" id="modal-vitals"></ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="p-3 border rounded bg-white">
+                <h6 class="fw-bold small text-muted mb-2">REPORTED SYMPTOMS</h6>
+                <p class="small mb-0" id="modal-symptoms"></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <h6 class="fw-bold small text-muted mb-1">CLINICAL EXPLANATION</h6>
+            <p class="small text-muted mb-0" id="modal-explanation"></p>
+          </div>
+
+          <div class="mb-2">
+            <h6 class="fw-bold small text-muted mb-1">RECOMMENDED GUIDANCE</h6>
+            <ul class="small text-muted ps-3 mb-0" id="modal-recommendations"></ul>
+          </div>
+        </div>
+        <div class="modal-footer border-top px-4 pb-4">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="modal-download-btn">
+            <i class="fa-solid fa-download me-1"></i> Download Report
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container position-fixed bottom-0 start-0 p-3" id="toast-container" style="z-index: 2000;"></div>
+
+  <!-- ========================================================= -->
+  <!-- Footer                                                    -->
+  <!-- ========================================================= -->
+  <footer class="footer-custom">
+    <div class="container px-lg-4">
+      <div class="row g-4 mb-4">
+        <div class="col-md-5">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <div class="brand-icon-wrapper" style="width: 32px; height: 32px; font-size: 1rem;">
+              <i class="fa-solid fa-heart-pulse"></i>
+            </div>
+            <strong class="text-white fs-6">Smart HealthCare AI System</strong>
+          </div>
+          <p class="small text-muted mb-0">
+            A comprehensive, responsive healthcare disease prediction platform powered by Scikit-Learn machine learning and an interactive AI triage assistant. Designed for patient education, symptom tracking, and wellness support.
+          </p>
+        </div>
+        <div class="col-md-3">
+          <h6 class="text-white fw-bold mb-3 small">QUICK NAVIGATION</h6>
+          <ul class="list-unstyled small mb-0">
+            <li class="mb-2"><a href="#" class="nav-action-btn" data-target="home-section">Home Dashboard</a></li>
+            <li class="mb-2"><a href="#" class="nav-action-btn" data-target="predict-section">Disease Risk Prediction</a></li>
+            <li class="mb-2"><a href="#" class="nav-action-btn" data-target="history-section">Assessment History</a></li>
+            <li class="mb-2"><a href="#" class="nav-action-btn" data-target="about-section">System Architecture</a></li>
+            <li><a href="#" class="nav-action-btn" data-target="contact-section">Emergency Contacts</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h6 class="text-white fw-bold mb-3 small">MEDICAL DISCLAIMER</h6>
+          <p class="small text-muted mb-0">
+            This platform is strictly for informational and educational purposes. It does not replace professional medical advice, clinical diagnosis, or physical examination. Always consult a qualified healthcare provider.
+          </p>
+        </div>
+      </div>
+      <hr style="border-color: #334155;">
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 small text-muted">
+        <div>&copy; 2026 Smart HealthCare Disease Prediction System. All rights reserved.</div>
+        <div>Built with Flask, Scikit-Learn, Bootstrap 5 &amp; SQLite</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Chart.js 4 -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <!-- Custom Application Scripts -->
+  <script src="chatbot.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
